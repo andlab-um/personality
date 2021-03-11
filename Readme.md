@@ -25,3 +25,8 @@ Evaluation just looks at percent accuracy. More important than accuracy is the t
 
 Each team member should also submit a discussion of the features used and discarded, results, and comparison with papers discussed in class, due via email (haiyanwu3@gmail.com) next week Wednesday.
 
+## Important dates
+
+**5/17**: 10-minute presentation of your proposal in class (email me slides or link to slides before class)
+
+**5/24**: Paper due 11:59pm
