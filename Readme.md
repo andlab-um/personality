@@ -23,5 +23,5 @@ Evaluation just looks at percent accuracy. More important than accuracy is the t
 
 ## Individual component
 
-Each team member should also submit a discussion of the features used and discarded, results, and comparison with papers discussed in class, due via email (proflevitan@gmail.com) next week Wednesday.
+Each team member should also submit a discussion of the features used and discarded, results, and comparison with papers discussed in class, due via email (haiyanwu3@gmail.com) next week Wednesday.
 
