@@ -1,62 +1,54 @@
 # label a status update for personality
-
-from sklearn.model_selection import cross_val_score, cross_val_predict
-from sklearn import svm, preprocessing, metrics
-import feature_extractor as fe
-import numpy
-import re
-import sys
-import csv
-import codecs
-import argparse
+import os
 import pickle
-from subprocess import call
+import argparse
+import pandas as pd
+from sklearn import svm, metrics
+from sklearn.pipeline import make_pipeline
+from sklearn.model_selection import cross_val_predict, train_test_split 
 
-class_idx = [7, 8, 9, 10, 11]
-
-def load_data(datafile):
-	with codecs.open(datafile, encoding="latin-1") as f:
-		reader = csv.reader(f)
-		return next(reader), list(reader)
+output_path = "./model"
+traits = ["cEXT", "cNEU", "cAGR", "cCON", "cOPN"]
 
 def load_conf_file(conffile):
-	conf = set(line.strip() for line in open(conffile))
+	conf = [line.strip() for line in open(conffile)]
 	return conf
-
-def predict_trait(X, Y):
-	scores = cross_val_score(svm.SVC(), X, Y, scoring='accuracy', cv=10)
-	return scores.mean()
 
 def handle_args():
 	parser = argparse.ArgumentParser()
-	parser.add_argument('-d', '--datafile', help='file containing data for training or testing', required=True, dest='datafile')
-	parser.add_argument('-c', '--conffile', help='file containing list of features to be extracted', dest='conffile', required=True)
-	parser.add_argument('-e', '--expdir', help='directory for storing conf file and models associated with this experiment', required=True)
-	parser.add_argument('-l', '--load', action='store_true', help='include to load models from <expdir> instead of training new')
+	parser.add_argument("-d", "--datafile", default="mypersonality_train.csv", help="file containing data for training or testing", dest="datafile")
+	parser.add_argument("-c", "--conffile", default="config.ini", help="file containing list of features to be extracted", dest="conffile")
+	parser.add_argument("-l", "--load", action="store_true", help="include to load models instead of training new")
 	return vars(parser.parse_args())
 
 if __name__ == "__main__":
 	args = handle_args()
 	print(args)
-	header, data = load_data(args['datafile'])
-	labels = numpy.asarray([[line[i] for i in class_idx] for line in data]).T.tolist()
+	if not os.path.exists(output_path):
+		os.mkdir(output_path)
 
-	conf = load_conf_file(args['conffile'])
-	features = fe.extract_features([line[1] for line in data], conf)	# this will only pass the status update text to the feature extractor
+	df = pd.read_csv(args["datafile"], encoding="latin-1")
 
-	if not args['load']:
+	# read configure
+	conf = load_conf_file(args["conffile"])
+
+	# get features and labels and split to train&&test data
+	X_train, X_test, y_train, y_test = train_test_split(df[conf], df[traits], test_size=0.2, random_state=0)
+
+	if not args["load"]:
 		# train new models, evaluate, store
-		for i in range(len(class_idx)):
-			trait = header[class_idx[i]]
-			clf = svm.SVC().fit(features, labels[i])
-			predicted = cross_val_predict(clf, features, labels[i], cv=10)
-			print("%s: %.2f" % (header[class_idx[i]], metrics.accuracy_score(labels[i], predicted)))
-			with open("%s/%s.pkl" % (args['expdir'], trait), 'wb') as f:
+		for trait in traits:
+			pipe = make_pipeline(svm.SVC(random_state=0))
+			clf = pipe.fit(X_train, y_train[trait])
+			predicted = cross_val_predict(clf, X_train, y_train[trait], cv=10)
+			# print("%s train acc: %.2f%" % (trait, )
+			print("{} train acc: {:.2f}%".format(trait, metrics.accuracy_score(y_train[trait], predicted) * 100))
+			print("{} test acc: {:.2f}%".format(trait, clf.score(X_test, y_test[trait]) * 100))
+			with open(os.path.join(output_path, "{}.pkl".format(trait)), "wb") as f:
 				pickle.dump(clf, f)
 	else:
-		for i in range(len(class_idx)):
-			trait = header[class_idx[i]]
-			with open("%s/%s.pkl" % (args['expdir'], trait), 'rb') as f:
+		# load exist models
+		for trait in traits:
+			with open(os.path.join(output_path, "{}.pkl".format(trait)), "rb") as f:
 				clf = pickle.load(f)
-			print("%s: %.2f" % (trait, clf.score(features, labels[i])))
-		
+			print("{} test acc: {:.2f}%".format(trait, clf.score(X_test, y_test[trait]) * 100))
