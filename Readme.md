@@ -10,6 +10,9 @@ The status updates in myPersonality have been anonymized manually, with each pro
 
 ## Usage
 
+**!! Please install Python on your computer first**. See [How To Install Python on Windows, macOS, and Linux
+](https://kinsta.com/knowledgebase/install-python/).
+
 `personality_classifier.py` will load the data, run the feature extractor with the supplied configuration file `config.ini`, and train a model to predict each personality trait's binary label  with the extracted features automatically.
 
 `config.ini` includes raw feature names in our data. You can specific any features by column names appeared in `csv` files(See `mypersonality_train.csv` for more details). For example, in default `config.ini` file we use `sEXT`, `sNEU`, `sAGR`, `sCON` and `sOPN` as features to build our classifier. For those with programming experience, you can create higher-order features based on original data or modify model parameters to get better performance.
