@@ -14,7 +14,7 @@ The status updates in myPersonality have been anonymized manually, with each pro
 ](https://kinsta.com/knowledgebase/install-python/).
 2. Clone/download this repository (Click `Code` and then `Download ZIP`).
 3. Unzip the downloaded file and go to the personality folder.
-4. Open the terminal in the personality folder (make sure the terminal is currently navigated to the folder).
+4. Open the terminal in the personality folder (or navigate to the folder in the terminal using [`cd` command](https://www.geeksforgeeks.org/cd-cmd-command/), similar for Windows and Mac/Linux users).
 5. Install required Python packages by running `pip install -r requirements.txt` in the terminal.
 6. Run `python personality_classifier.py` in the terminal to train and test the classifier and see the output.
 
