@@ -10,8 +10,15 @@ The status updates in myPersonality have been anonymized manually, with each pro
 
 ## Usage
 
-**!! Please install Python on your computer first**. See [How To Install Python on Windows, macOS, and Linux
+1. **!! Please install Python on your computer first**. See [How To Install Python on Windows, macOS, and Linux
 ](https://kinsta.com/knowledgebase/install-python/).
+2. Clone/download this repository (Click `Code` and then `Download ZIP`).
+3. Unzip the downloaded file and go to the personality folder.
+4. Open the terminal in the personality folder (make sure the terminal is currently navigated to the folder).
+5. Install required Python packages by running `pip install -r requirements.txt` in the terminal.
+6. Run `python personality_classifier.py` in the terminal to train and test the classifier and see the output.
+
+### More details
 
 `personality_classifier.py` will load the data, run the feature extractor with the supplied configuration file `config.ini`, and train a model to predict each personality trait's binary label  with the extracted features automatically.
 
@@ -23,9 +30,9 @@ You can also run `personality_classifier.py` with the `--load` option to have it
 
 quickstart: `python personality_classifier.py`
 
-training on custom dataset with custom configuration file: `python personality_classifier.py -d path_to_your_data -c path_to_your_configuration`
+training on a custom dataset with custom configuration file: `python personality_classifier.py -d path_to_your_data -c path_to_your_configuration`
 
-load well trained model: `python personality_classifier.py -l`
+load well-trained model: `python personality_classifier.py -l`
 
 see more information about command arguments: `python personality_classifier.py -h`
 
