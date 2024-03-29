@@ -10,7 +10,7 @@ The status updates in myPersonality have been anonymized manually, with each pro
 
 ## Usage
 
-1. **!! Please install Python on your computer first**. See [How To Install Python on Windows, macOS, and Linux
+1. **!! Please install Python (version <= 3.12) on your computer first**. See [How To Install Python on Windows, macOS, and Linux
 ](https://kinsta.com/knowledgebase/install-python/).
 2. Clone/download this repository (Click `Code` and then `Download ZIP`).
 3. Unzip the downloaded file and go to the personality folder.
